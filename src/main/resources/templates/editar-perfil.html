@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="shortcut icon" href="img/iconotratohecho.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&family=Open+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+</head>
+<body>
+    <header>
+        <nav sec:authorize="!isAuthenticated()">
+                <a href="/">Inicio</a>
+                <a href="/login">Iniciar Sesion</a>
+                <a href="/registro">Registrarse</a>
+            </nav>
+            <nav sec:authorize="isAuthenticated()">
+                <a href="/">Inicio</a>
+                <a href="/categoria">Categorias</a>
+                <a href="/categoria/trabajadores">Trabajadores</a>
+                <a href="/usuario">Perfil</a>
+                <a href="/logout">Salir</a>
+            </nav>
+        <section class="textos-header">
+            <h1>TRATO HECHO</h1>
+            <h2>Contrata a la Persona indicada, para el Trabajo indicado</h2>
+        </section>
+        <div class="wave" style="height: 150px; overflow: hidden;" ><svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;"><path d="M0.00,49.98 C128.38,-60.67 372.74,181.09 500.00,49.98 L500.00,150.00 L0.00,150.00 Z" style="stroke: none; fill: #fff;"></path></svg></div>
+    </header>
+    <main>
+
+        <h3>Editar perfil:</h3>
+
+        <span th:if="${error != null}" th:text="${error}" style="color: red;"></span>
+        <form action="index.php" method="post">
+
+            <select id="rol" name="rol" class="form-select" onChange="mostrar(this.value);">
+                <option selected>Elija su rol</option>
+                <option value="CLIENTE" >CLIENTE</option>
+                <option value="TRABAJADOR">TRABAJADOR</option>
+            </select>
+        </form>
+
+        <div id="CLIENTE" class="element" style="display: none;">
+            <h2>FORMULARIO CLIENTE</h2>
+            <form action="/usuario/editar" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" th:vale="${usuario.id}"> 
+                <label for="username" class="form-label">Elija nombre de usuario</label>
+                <input type="text" id="username" name="username" placeholder="Usuario" class="form-control"><br>
+                <label for="password" class="form-label">Ingrese una contraseña</label>
+                <input type="password" id="password" class="form-control" name="password" placeholder="Contraseña"><br>
+                <label for="password2" class="form-label">Repetir contraseña</label>
+                <input type="password" id="password2" class="form-control" name="password2" placeholder="Repetir contraseña"><br>
+                <input hidden name="rol" value="CLIENTE">
+                <label for="email" class="form-label">Ingrese un mail</label>
+                <input type="email" name="email" id="email" class="form-control" ><br>
+                <label for="phone" class="form-label">Ingrese un telefono</label>
+                <input type="tel" class="form-control" id="phone" name="telefono"
+                pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
+                required><br>
+                <input hidden name="profesion" value="cliente" ><br>
+                <label for="foto">Suba una foto</label>
+                <input type="file" id="foto" name="archivo" class="form-control"><br>
+                <input type="submit" name="registrar" class="btn btn-primary mb-3">
+            </form>
+        </div>  
+
+
+        <div id="TRABAJADOR" class="element" style="display: none;">
+            <h2>FORMULARIO TRABAJADOR</h2>
+            <form action="/usuario/editar" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" th:vale="${usuario.id}"> 
+                <label for="username" class="form-label">Elija nombre de usuario</label>
+                <input type="text" id="username" name="username" placeholder="Usuario" class="form-control"><br>
+                <label for="password" class="form-label">Ingrese una contraseña</label>
+                <input type="password" id="password" class="form-control" name="password" placeholder="Contraseña"><br>
+                <label for="password2" class="form-label">Repetir contraseña</label>
+                <input type="password" id="password2" class="form-control" name="password2" placeholder="Repetir contraseña"><br>
+                <input hidden name="rol" value="TRABAJADOR">
+                <label for="email" class="form-label">Ingrese un mail</label>
+                <input type="email" name="email" id="email" class="form-control" ><br>
+                <label for="phone" class="form-label">Ingrese un telefono</label>
+                <input type="tel" class="form-control" id="phone" name="telefono"
+                pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
+                required><br>
+                <label for="profesion" class="form-label">Elija una profesion</label>
+                <input type="text" name="profesion" class="form-control" id="profesion"><br>
+                <label for="foto">Suba una foto</label>
+                <input type="file" id="foto" name="archivo" class="form-control"><br>
+                <input type="submit" name="registrar" class="btn btn-primary mb-3">
+            </form>
+
+            <!--  <option th:value="'CLIENTE'" th:text="CLIENTE"></option>
+                <option th:value="'TRABAJADOR'" th:text="TRABAJADOR"></option>>-->
+        </div>
+
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+       
+        <script type="text/javascript">
+            function mostrar(id) {
+            if (id == "CLIENTE") {
+            $("#CLIENTE").show();
+            $("#TRABAJADOR").hide();
+            }
+
+            if (id == "TRABAJADOR") {
+            $("#CLIENTE").hide();
+            $("#TRABAJADOR").show();
+            }
+            }
+        </script>
+        
+    </main>
+    <footer>
+        <div class="contenedor-footer">
+            <div class="content-foo">
+                <h4>Telefono</h4>
+                <p>3333 - 45 4545</p>
+            </div>
+            <div class="content-foo">
+                <h4>Mail</h4>
+                <p>contrataciones@tratohecho.com.ar</p>
+            </div>
+            <div class="content-foo">
+                <h4>Ubicacion</h4>
+                <p>San Miguel de Tucumán, Tucumán, Argentina</p>
+            </div>
+        </div>
+        <h2 clas="titulo-final">&copy; Trato Hecho | Grupo 7</h2>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
