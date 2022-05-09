@@ -22,13 +22,11 @@ public class ContratacionServicio {
     @Transactional
     public void contratar(String idUsuarioCliente, String idUsuarioTrabajador, String descripcion) throws Exception {
         Contratacion contratacion = new Contratacion();
-        //contratacion.setFechaContratacion(new Date());
+        contratacion.setFechaContratacion(new Date());
         contratacion.setDescripcion(descripcion);
-        //contratacion.setEstado(Estado.ESPERANDO_CONFIRMACION);
+        contratacion.setEstado(Estado.ESPERANDO_CONFIRMACION);
 
         if (idUsuarioCliente.equals(idUsuarioTrabajador)) {
-            System.out.println("Esta intentando contratarse a si mismo");
-            System.out.println("Esta intentando contratarse a si mismo");
             System.out.println("Esta intentando contratarse a si mismo");
             throw new Exception("No puede contratarse a usted mismo");
         }
@@ -39,14 +37,13 @@ public class ContratacionServicio {
             contratacion.setCliente(usuarioCliente);
         } else {
             System.out.println("No se encontro el usuario cliente");
-            System.out.println("No se encontro el usuario cliente");
-            System.out.println("No se encontro el usuario cliente");
             throw new Exception("No existe su usuario");
         }
 
         Optional<Usuario> respuesta2 = usuarioRepositorio.findById(idUsuarioTrabajador);
         if (respuesta2.isPresent()) {
             Usuario usuarioTrabajador = respuesta2.get();
+            contratacion.setTrabajador(usuarioTrabajador);
         } else {
             System.out.println("No se encontro el usuario trabajador");
             System.out.println("No se encontro el usuario trabajador");

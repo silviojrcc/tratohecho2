@@ -89,7 +89,7 @@ public class UsuarioServicio implements UserDetailsService {
             
             ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
             HttpSession session = attr.getRequest().getSession(true);
-            session.setAttribute("usuariosession", usuario);
+            session.setAttribute("usuario", usuario);
 
             User user = new User(username, usuario.getPassword(), permisos);
             return user;

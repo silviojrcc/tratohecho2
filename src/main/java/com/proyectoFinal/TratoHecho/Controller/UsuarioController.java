@@ -59,6 +59,7 @@ public class UsuarioController {
             ModelMap modelo) {
 
         try {
+            System.out.println("hola");
             if (principal == null) {
                 System.out.println("la persona no está autenticada");
                 redirectAttributes.addFlashAttribute("error", "Debe iniciar sesión para poder contratar un trabajador!");
@@ -69,21 +70,15 @@ public class UsuarioController {
 
             contratacionServicio.contratar(usuario.getId(), idTrabajador, " ");
 
-            return "inicio";
+            return "index";
         } catch (Exception ex) {
+            
             modelo.addAttribute("error", ex.getMessage());
             System.out.println("error: " + ex.getMessage());
             System.out.println("error: " + ex.getMessage());
-            System.out.println("error: " + ex.getMessage());
-            System.out.println("error: " + ex.getMessage());
-            System.out.println("error: " + ex.getMessage());
-            System.out.println("error: " + ex.getMessage());
-            System.out.println("error: " + ex.getMessage());
-            System.out.println("error: " + ex.getMessage());
-            System.out.println("error: " + ex.getMessage());
 
-            //redirectAttributes.addFlashAttribute("error", ex.getMessage());
-            return "categoria/trabajadores";
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/categoria/trabajadores";
         }
 
     }
